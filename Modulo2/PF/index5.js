@@ -36,6 +36,7 @@ class Pregunta {
         this.cantidad;
         this.opciones;
         this.correcta;
+        this.tipos=['Alternativa','Binaria: Verdadero o Falso','Binaria: Si o No','Abierta'];
     }
     estructurar(){
         if(this.tipo === 'Alternativa'){
@@ -90,7 +91,8 @@ pregunta3.correcta='---'
 
 
 
-
+console.log(pregunta1.tipos)
+console.log(pregunta1.tipos[0])
 console.log(pregunta1.enunciado)
 pregunta1.estructurar()
 pregunta2.estructurar()
@@ -323,8 +325,6 @@ function ResponderPreguntaC(pregunta) {
     });
 }
 
-
-
 function ResponderPreguntaD(pregunta) {
     return new Promise((resolve, reject) => {
         function mostrarPregunta2() {
@@ -364,6 +364,7 @@ function ResponderPreguntaD(pregunta) {
     });
 }
 
+
 function mostrarResultados(encuesta){
     Swal.fire({
         title: `Resultados Encuesta: <br />` + encuesta.nombre,
@@ -378,4 +379,245 @@ function mostrarResultados(encuesta){
     });
 
 }
+
+function generarEncuesta(arrEncuestas){
+    let nombre;
+    let cant;
+    let preguntasEncuesta=[]
+    pedirTitulo(arrEncuestas,nombre,cant,preguntasEncuesta)
+}
+
+
+function pedirTitulo(arrEncuestas,nombre,cantidad,preguntasEncuesta) {
+    Swal.fire({
+        title: 'Ingrese título de encuesta nueva:',
+        input: 'text',
+        confirmButtonText: 'Aceptar',
+        preConfirm: (inputValue) => {
+            if (inputValue.length > 2) {
+                nombre=inputValue
+                return 'bienvenida';
+            } else {
+                return 'error';
+            }
+        }
+    }).then((result) => {
+        if (result.value === 'bienvenida') {
+            Swal.fire({
+                title: 'Dato Ingresado',
+                text: 'Título ingresado correctamente',
+                icon: 'success',
+                confirmButtonText: 'Aceptar'
+            }).then(() => {
+                pedirCant(arrEncuestas,nombre,cantidad,preguntasEncuesta);
+            });
+        } else {
+            Swal.fire({
+                title: 'Error',
+                text: 'El valor ingresado es menor a 2 carácteres.',
+                icon: 'error',
+                confirmButtonText: 'Aceptar'
+            }).then(() => {
+                pedirTitulo(arrEncuestas,nombre,cantidad,preguntasEncuesta);
+            });
+        }
+    });
+}
+
+function pedirCant(arrEncuestas,nombre,cantidad,preguntasEncuesta) {
+    Swal.fire({
+        title: 'Ingrese la cantidad de preguntas que tendrá la encuesta:',
+        html: 'Cantidad:',
+        input: 'number',
+        confirmButtonText: 'Aceptar',
+        preConfirm: (inputValue) => {
+            if (inputValue > 0 ) {
+                cantidad = inputValue;
+                return 'bienvenida';
+            } else {
+                return 'error';
+            }
+        }
+    }).then((result) => {
+        if (result.value === 'bienvenida') {
+            Swal.fire({
+                title: 'Dato Ingresado',
+                text: 'Cantidad de preguntas deseadas ingresada correctamente',
+                icon: 'success',
+                confirmButtonText: 'Aceptar'
+            }).then(() => {                
+                let encuestaN = new Encuesta(
+                    nombre,
+                    cantidad,
+                    preguntasEncuesta
+                );
+                pedirPreguntas(arrEncuestas,encuestaN);
+            });
+        } else {
+            Swal.fire({
+                title: 'Error',
+                text: 'Cantidad debe ser mayor a 0.',
+                icon: 'error',
+                confirmButtonText: 'Aceptar'
+            }).then(() => {
+                pedirCant(arrEncuestas,nombre,cantidad,preguntasEncuesta);
+            });
+        }
+    });
+}
+
+function pedirPreguntas(arrEncuestas,encuestaN){
+    let index = 0;
+    function generarSiguientePregunta(){
+        let enunciado;
+        let tipo;
+        if (index < encuestaN.cantidad) {
+
+            pedirEnunciado().then((resp) => {
+            console.log('ABER')
+            console.log(resp)
+            console.log(resp[0])
+            console.log(resp[1])
+            console.log('ABER2')
+            enunciado=resp[0]
+            tipo=resp[1]
+
+            let preguntaN = new Pregunta(enunciado, tipo)
+            preguntaN.estructurar()
+
+            let promesaRespuesta;
+
+            if (preguntaN.tipo === 'Alternativa') {
+                promesaRespuesta = generarPreguntaA(preguntaN);
+            } else if (preguntaN.tipo === 'Binaria: Verdadero o Falso') {
+                promesaRespuesta = generarPreguntaB(preguntaN);
+            } else if (preguntaN.tipo === 'Binaria: Si o No') {
+                promesaRespuesta = generarPreguntaC(preguntaN);
+            } else if (preguntaN.tipo === 'Abierta') {
+                promesaRespuesta = generarPreguntaD(preguntaN);
+            }
+
+            promesaRespuesta.then((respuesta) => {
+                encuestaN.preguntas.push(preguntaN)
+                index++;
+                generarSiguientePregunta();
+            }).catch((error) => {
+                console.error(error);
+            });
+
+            }).catch((error) => {
+                console.error(error);
+            });
+        } else {
+            arrEncuestas.push(encuestaN);
+            Inicio(arrEncuestas);
+        }
+    }
+    generarSiguientePregunta()
+}
+
+function pedirEnunciado(){
+    return new Promise((resolve, reject) => {
+        let resp=[]
+        Swal.fire({
+            title: 'Ingrese enunciado de pregunta nueva:',
+            input: 'text',
+            confirmButtonText: 'Aceptar',
+            preConfirm: (inputValue) => {
+                if (inputValue.length > 2) {
+                    resp.push(inputValue)
+                    console.log(resp)
+                    //resolve(resp);
+                    return 'bienvenida';
+                    
+                } else {
+                    //reject('error');
+                    return 'error';
+                }
+            }
+        }).then((result) => {
+            if (result.value === 'bienvenida') {
+                Swal.fire({
+                    title: 'Dato Ingresado',
+                    text: 'Enunciado ingresado correctamente',
+                    icon: 'success',
+                    confirmButtonText: 'Aceptar'
+                }).then(() => {
+                    pedirTipo(resp).then((updatedResp) => {
+                        resolve(updatedResp);
+                    }).catch((error) => {
+                        reject(error);
+                    });
+                });
+            } else {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'El valor ingresado es menor a 2 carácteres.',
+                    icon: 'error',
+                    confirmButtonText: 'Aceptar'
+                }).then(() => {
+                    pedirEnunciado().then((updatedResp) => {
+                        resolve(updatedResp);
+                    }).catch((error) => {
+                        reject(error);
+                    });
+                });
+            }
+        });
+
+    })
+}
+
+function pedirTipo(resp){
+    return new Promise((resolve, reject) => {
+        console.log(resp)
+        let preguntaEj = new Pregunta('asdasdas', 'Alternativa')        
+        Swal.fire({
+            title: 'Ingrese el ID de tipo de pregunta nueva:',
+            html: preguntaEj.tipos.map((tip, index) => `<p align='left'><strong>${index}</strong>: ${tip}`).join('<br />'),
+            input: 'number',
+            confirmButtonText: 'Aceptar',
+            preConfirm: (inputValue) => {
+                let l = preguntaEj.tipos.length;
+                if (inputValue >= 0 && inputValue < l && inputValue!=='') {
+                    resp.push(preguntaEj.tipos[inputValue]);
+                    console.log(resp)
+                    //console.log(id)
+                    //resolve(resp);
+                    return 'correcto';
+                } else {
+                    //reject('error');
+                    return 'error';
+                }
+            }
+        }).then((result) => {
+            if (result.value === 'correcto') {
+                Swal.fire({
+                    title: 'ID Correcta',
+                    text: 'ID de encuesta deseada ingresada correctamente',
+                    icon: 'success',
+                    confirmButtonText: 'Aceptar'
+                }).then(() => {
+                    resolve(resp);
+                });
+            } else {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'El valor ingresado no corresponde a los ID de encuestas.',
+                    icon: 'error',
+                    confirmButtonText: 'Aceptar'
+                }).then(() => {
+                    pedirTipo(resp).then((updatedResp) => {
+                        resolve(updatedResp);
+                    }).catch((error) => {
+                        reject(error);
+                    });
+                });
+            }
+        });
+    })
+}
+
+
+
 Inicio(arrEncuestas);
