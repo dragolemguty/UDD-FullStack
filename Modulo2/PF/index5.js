@@ -1,14 +1,4 @@
 let arrEncuestas = [];
-
-let pregunta0 = {
-    'enunciado':'Cual es la capital de Chile?',
-    'tipo':'Alternativas',
-    'cantidad':5,
-    'opciones':['Temuco','Valdivia','Rancagua','Santiago','Coquimbo'],
-    'respuesta':'Santiago'
-};
-
-
 let preguntasEncuesta = [];
 
 class Encuesta {
@@ -90,7 +80,7 @@ pregunta3.opciones=['¿Eres el más fuerte porque eres Satoru Goyo?','¿o eres S
 pregunta3.correcta='---'
 
 
-
+console.log(pregunta3.cantidad)
 console.log(pregunta1.tipos)
 console.log(pregunta1.tipos[0])
 console.log(pregunta1.enunciado)
@@ -212,6 +202,7 @@ function ResponderEncuesta(encuesta) {
 }
 
 function ResponderPreguntaA(pregunta) {
+    let resp;
     return new Promise((resolve, reject) => {
         function mostrarPregunta() {
             Swal.fire({
@@ -222,7 +213,7 @@ function ResponderPreguntaA(pregunta) {
                 preConfirm: (inputValue) => {
                     let l = pregunta.opciones.length;
                     if (inputValue >= 0 && inputValue < l && inputValue!=='') {
-                        resp=inputValue;
+                        resp=pregunta.opciones[inputValue];
                         return inputValue;
                     } else {
                         throw new Error('Respuesta inválida');
@@ -235,7 +226,7 @@ function ResponderPreguntaA(pregunta) {
                             icon: 'success',
                             confirmButtonText: 'Aceptar'
                         }).then(() => {
-                            resolve(result.value);
+                            resolve(resp);
                         })
             }).catch((error) => {
                 Swal.fire({
@@ -396,13 +387,13 @@ function pedirTitulo(arrEncuestas,nombre,cantidad,preguntasEncuesta) {
         preConfirm: (inputValue) => {
             if (inputValue.length > 2) {
                 nombre=inputValue
-                return 'bienvenida';
+                return 'correcto';
             } else {
                 return 'error';
             }
         }
     }).then((result) => {
-        if (result.value === 'bienvenida') {
+        if (result.value === 'correcto') {
             Swal.fire({
                 title: 'Dato Ingresado',
                 text: 'Título ingresado correctamente',
@@ -427,19 +418,19 @@ function pedirTitulo(arrEncuestas,nombre,cantidad,preguntasEncuesta) {
 function pedirCant(arrEncuestas,nombre,cantidad,preguntasEncuesta) {
     Swal.fire({
         title: 'Ingrese la cantidad de preguntas que tendrá la encuesta:',
-        html: 'Cantidad:',
+        //html: 'Cantidad:',
         input: 'number',
         confirmButtonText: 'Aceptar',
         preConfirm: (inputValue) => {
             if (inputValue > 0 ) {
                 cantidad = inputValue;
-                return 'bienvenida';
+                return 'correcto';
             } else {
                 return 'error';
             }
         }
     }).then((result) => {
-        if (result.value === 'bienvenida') {
+        if (result.value === 'correcto') {
             Swal.fire({
                 title: 'Dato Ingresado',
                 text: 'Cantidad de preguntas deseadas ingresada correctamente',
@@ -485,25 +476,27 @@ function pedirPreguntas(arrEncuestas,encuestaN){
             let preguntaN = new Pregunta(enunciado, tipo)
             preguntaN.estructurar()
 
-            let promesaRespuesta;
-
             if (preguntaN.tipo === 'Alternativa') {
-                promesaRespuesta = generarPreguntaA(preguntaN);
-            } else if (preguntaN.tipo === 'Binaria: Verdadero o Falso') {
-                promesaRespuesta = generarPreguntaB(preguntaN);
-            } else if (preguntaN.tipo === 'Binaria: Si o No') {
-                promesaRespuesta = generarPreguntaC(preguntaN);
+                generarPreguntaA(preguntaN).then((preg) => {
+                    encuestaN.preguntas.push(preg)
+                    index++;
+                    generarSiguientePregunta();
+                }).catch((error) => {
+                    console.error(error);
+                });
+            } else if (preguntaN.tipo === 'Binaria: Verdadero o Falso' || preguntaN.tipo === 'Binaria: Si o No') {
+                generarPreguntaBC(preguntaN).then((preg) => {
+                    encuestaN.preguntas.push(preg)
+                    index++;
+                    generarSiguientePregunta();
+                }).catch((error) => {
+                    console.error(error);
+                });
             } else if (preguntaN.tipo === 'Abierta') {
-                promesaRespuesta = generarPreguntaD(preguntaN);
-            }
-
-            promesaRespuesta.then((respuesta) => {
                 encuestaN.preguntas.push(preguntaN)
                 index++;
-                generarSiguientePregunta();
-            }).catch((error) => {
-                console.error(error);
-            });
+                generarSiguientePregunta();                
+            }
 
             }).catch((error) => {
                 console.error(error);
@@ -528,7 +521,7 @@ function pedirEnunciado(){
                     resp.push(inputValue)
                     console.log(resp)
                     //resolve(resp);
-                    return 'bienvenida';
+                    return 'correcto';
                     
                 } else {
                     //reject('error');
@@ -536,7 +529,7 @@ function pedirEnunciado(){
                 }
             }
         }).then((result) => {
-            if (result.value === 'bienvenida') {
+            if (result.value === 'correcto') {
                 Swal.fire({
                     title: 'Dato Ingresado',
                     text: 'Enunciado ingresado correctamente',
@@ -617,7 +610,216 @@ function pedirTipo(resp){
         });
     })
 }
+function generarPreguntaA(pregunta){
+    return new Promise((resolve, reject) => {
+        let cantidad;
+        Swal.fire({
+            title: 'Cantidad de alternativas',
+            html: 'Ingrese la cantidad de alternativas que tendrá la pregunta:',
+            input: 'number',
+            confirmButtonText: 'Aceptar',
+            preConfirm: (inputValue) => {
+                if (inputValue > 0 ) {
+                    cantidad = inputValue;
+                    return 'correcto';
+                } else {
+                    return 'error';
+                }
+            }
+        }).then((result) => {
+            if (result.value === 'correcto') {
+                Swal.fire({
+                    title: 'Dato Ingresado',
+                    text: 'Cantidad de alternativas deseadas ingresada correctamente',
+                    icon: 'success',
+                    confirmButtonText: 'Aceptar'
+                }).then(() => {
+                    pregunta.cantidad = cantidad;
+                    return pedirAlternativas(pregunta);
+                }).then((alt) => {
+                    pregunta.opciones = alt;
+                    console.log(alt);
+                    console.log(pregunta.opciones);
+                    return pedirCorrecta(pregunta);
+                }).then((respuestaCorrecta) => {
+                    pregunta.correcta = respuestaCorrecta;
+                    console.log(pregunta.correcta);
+                    resolve(pregunta);
+                }).catch((error) => {
+                    console.error(error);
+                    reject(error)
+                });               
+            } else {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Cantidad debe ser mayor a 0.',
+                    icon: 'error',
+                    confirmButtonText: 'Aceptar'
+                }).then(() => {
+                    generarPreguntaA(pregunta);
+                });
+            } 
+
+        });
+    })
+}
+
+function generarPreguntaBC(pregunta){
+    return new Promise((resolve, reject) => {
+        pedirCorrecta(pregunta).then((respuestaCorrecta) => {
+            pregunta.correcta = respuestaCorrecta;
+            console.log(pregunta.correcta);
+            resolve(pregunta);
+            }).catch((error) => {
+                console.error(error);
+                reject(error)
+            });
+        })
+}
 
 
+
+
+function pedirAlternativas(pregunta) {
+    return new Promise((resolve, reject) => {
+    let arrOps = [];
+    let index = 0;
+
+    function siguienteAlternativa() {
+        return new Promise((resolve, reject) => {
+            let resp
+            Swal.fire({
+                title: 'Ingrese alternativa de pregunta:',
+                input: 'text',
+                confirmButtonText: 'Aceptar',
+                preConfirm: (inputValue) => {
+                    if (inputValue.length > 0) {
+                        resp=inputValue;
+                        return 'correcto';                        
+                    } else {
+                        //reject('error');
+                        return 'error';
+                    }
+                }
+            }).then((result) => {
+                if (result.value === 'correcto') {
+                    Swal.fire({
+                        title: 'Dato Ingresado',
+                        text: 'Alternativa ingresada correctamente',
+                        icon: 'success',
+                        confirmButtonText: 'Aceptar'
+                    }).then(() => {
+                        
+                        console.log(resp)
+                        resolve(resp);
+                        
+                    }).catch((error) => {
+                        reject(error);
+                    });
+                } else {
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'El valor ingresado es menor a 1 carácteres.',
+                        icon: 'error',
+                        confirmButtonText: 'Aceptar'
+                    }).then(() => {
+                        siguienteAlternativa().then((updatedResp) => {
+                            resolve(updatedResp);
+                        })
+                    }).catch((error) => {
+                        reject(error);})
+                }
+            }).catch((error) => {
+                reject(error);
+            });
+        });
+    }
+
+    function iterarAlternativas() {
+        if (index < pregunta.cantidad) {
+            siguienteAlternativa().then((alternativa) => {
+                arrOps.push(alternativa);
+                index++;
+                iterarAlternativas();
+            }).catch((error) => {
+                console.error(error);
+                reject(error);
+            });
+        } else {
+            console.log(arrOps)
+            resolve(arrOps)
+        }
+    }
+
+    return iterarAlternativas();
+    })
+}
+
+function pedirCorrecta(pregunta){
+    let corr;
+    return new Promise((resolve, reject) => {
+        console.log(pregunta)       
+        Swal.fire({
+            title: 'Ingrese el ID de la respuesta correcta:',
+            html: pregunta.opciones.map((opp, index) => `<p align='left'><strong>${index}</strong>: ${opp}`).join('<br />'),
+            input: 'number',
+            confirmButtonText: 'Aceptar',
+            preConfirm: (inputValue) => {
+                let l = pregunta.opciones.length;
+                if (inputValue >= 0 && inputValue < l && inputValue!=='') {
+                    corr=pregunta.opciones[inputValue];
+                    //console.log(corr)
+                    //console.log(id)
+                    //resolve(resp);
+                    return 'correcto';
+                } else {
+                    //reject('error');
+                    return 'error';
+                }
+            }
+        }).then((result) => {
+            if (result.value === 'correcto') {
+                Swal.fire({
+                    title: 'ID Correcta',
+                    text: 'ID de respuesta ingresada correctamente',
+                    icon: 'success',
+                    confirmButtonText: 'Aceptar'
+                }).then(() => {
+                    resolve(corr);
+                });
+            } else {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'El valor ingresado no corresponde a los ID de respuestas.',
+                    icon: 'error',
+                    confirmButtonText: 'Aceptar'
+                }).then(() => {
+                    pedirCorrecta(pregunta).then((updatedResp) => {
+                        resolve(updatedResp);
+                    }).catch((error) => {
+                        reject(error);
+                    });
+                });
+            }
+        });
+    })
+}
 
 Inicio(arrEncuestas);
+
+// let pregunta5 = new Pregunta('Cual es la capital de Chile?', 'Alternativa')
+// pregunta1.cantidad=5
+// pregunta1.opciones=['Temuco','Valdivia','Rancagua','Santiago','Coquimbo']
+// pregunta1.correcta='Santiago'
+
+// let pregunta6 = new Pregunta('Soy hombre?', 'Binaria: Si o No')
+// pregunta6.correcta='Si'
+// pregunta6.estructurar()
+
+// let pregunta7 = new Pregunta('Soy hombre?', 'Abierta')
+// pregunta7.correcta='Si'
+// pregunta7.estructurar()
+
+// console.log(pregunta7.correcta)
+// generarPreguntaBC(pregunta7)
+// console.log(pregunta7.correcta)
