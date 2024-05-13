@@ -1,6 +1,8 @@
+//Inicializacion de arrays
 let arrEncuestas = [];
 let preguntasEncuesta = [];
 
+//Creacion de Clase Encuesta
 class Encuesta {
     constructor(nombre,cantidad,preguntas){
         this.nombre=nombre;
@@ -11,14 +13,14 @@ class Encuesta {
 
 }
 
-
+// Encuesta de ejemplo
 let encuesta1 = new Encuesta(
-    'Encuesta 1: ser o no ser',
+    'Ser o no ser',
     2,
     preguntasEncuesta
 )
 
-
+//Clase Pregunta
 class Pregunta {
     constructor(enunciado,tipo){
         this.enunciado=enunciado;
@@ -30,23 +32,18 @@ class Pregunta {
     }
     estructurar(){
         if(this.tipo === 'Alternativa'){
-            console.log('Hacer preguntas')
-
         }
         else if(this.tipo === 'Binaria: Verdadero o Falso'){
-            console.log('Hacer V/F')
             this.cantidad=2
             this.opciones=['Verdadero','Falso']
 
         }
         else if(this.tipo === 'Binaria: Si o No'){
-            console.log('Hacer Si/No')
             this.cantidad=2
             this.opciones=['Si','No']
 
         }
         else if(this.tipo === 'Abierta'){
-            console.log('Pregunta abierta')
             this.cantidad=1
             this.opciones=['N/A']
             this.correcta=['N/A']
@@ -66,7 +63,8 @@ class Pregunta {
 
 }
 
-let pregunta1 = new Pregunta('Cual es la capital de Chile?', 'Alternativa')
+//Preguntas de Ejemplo
+let pregunta1 = new Pregunta('¿Cuál es la capital de Chile?', 'Alternativa')
 pregunta1.cantidad=5
 pregunta1.opciones=['Temuco','Valdivia','Rancagua','Santiago','Coquimbo']
 pregunta1.correcta='Santiago'
@@ -80,34 +78,15 @@ pregunta3.opciones=['¿Eres el más fuerte porque eres Satoru Goyo?','¿o eres S
 pregunta3.correcta='---'
 
 
-console.log(pregunta3.cantidad)
-console.log(pregunta1.tipos)
-console.log(pregunta1.tipos[0])
-console.log(pregunta1.enunciado)
 pregunta1.estructurar()
 pregunta2.estructurar()
-//console.log(pregunta1.estructurar())
-console.log(pregunta1)
-console.log(pregunta2)
 preguntasEncuesta.push(pregunta1)
 preguntasEncuesta.push(pregunta2)
-//preguntasEncuesta.push(pregunta2)
 preguntasEncuesta.push(pregunta3)
 arrEncuestas.push(encuesta1)
 
-encuesta1.respuestas.push(['owowowo'])
-encuesta1.respuestas.push(['N/A','N/A'])
-//arrEncuestas.push(encuesta)
-console.log(encuesta1)
-console.log(arrEncuestas)
-console.log(encuesta1.respuestas)
-console.log(encuesta1.respuestas.slice(-1))
-console.log(encuesta1.respuestas.slice(-1).length)
-console.log(encuesta1.respuestas.slice(-1)[0].length)
-console.log(encuesta1.respuestas.slice(-1)[0][0])
 
-console.log(encuesta1.preguntas.length)
-
+//Menu principal: Muestra la opcion de generar encuesta o contestar encuestas existentes
 function Inicio(arrEncuestas) {
     Swal.fire({
         showDenyButton: true,
@@ -123,8 +102,7 @@ function Inicio(arrEncuestas) {
       });
 }
 
-
-
+//Funcion Mostrar Encuestas: Muestras listado de todas las encuestas existentes
 function mostrarEncuestas(arrEncuestas) {
     let id;
     Swal.fire({
@@ -136,7 +114,6 @@ function mostrarEncuestas(arrEncuestas) {
             let l = arrEncuestas.length;
             if (inputValue >= 0 && inputValue < l && inputValue!=='') {
                 id=inputValue;
-                //console.log(id)
                 return 'correcto';
             } else {
                 return 'error';
@@ -165,7 +142,7 @@ function mostrarEncuestas(arrEncuestas) {
     });
 }
 
-
+//Se Responde Encuesta escogida
 function ResponderEncuesta(encuesta) {
     let index = 0;
     let respuestas = [];
@@ -355,7 +332,7 @@ function ResponderPreguntaD(pregunta) {
     });
 }
 
-
+//Se muestran los resultados de la encuesta respondida
 function mostrarResultados(encuesta){
     Swal.fire({
         title: `Resultados Encuesta: <br />` + encuesta.nombre,
@@ -371,6 +348,7 @@ function mostrarResultados(encuesta){
 
 }
 
+//Se inicia proceso de generacion de encuesta nueva
 function generarEncuesta(arrEncuestas){
     let nombre;
     let cant;
@@ -418,7 +396,6 @@ function pedirTitulo(arrEncuestas,nombre,cantidad,preguntasEncuesta) {
 function pedirCant(arrEncuestas,nombre,cantidad,preguntasEncuesta) {
     Swal.fire({
         title: 'Ingrese la cantidad de preguntas que tendrá la encuesta:',
-        //html: 'Cantidad:',
         input: 'number',
         confirmButtonText: 'Aceptar',
         preConfirm: (inputValue) => {
@@ -457,6 +434,7 @@ function pedirCant(arrEncuestas,nombre,cantidad,preguntasEncuesta) {
     });
 }
 
+//Se piden las preguntas segun la cantidad de preguntas que tenga Encuesta
 function pedirPreguntas(arrEncuestas,encuestaN){
     let index = 0;
     function generarSiguientePregunta(){
@@ -465,11 +443,6 @@ function pedirPreguntas(arrEncuestas,encuestaN){
         if (index < encuestaN.cantidad) {
 
             pedirEnunciado().then((resp) => {
-            console.log('ABER')
-            console.log(resp)
-            console.log(resp[0])
-            console.log(resp[1])
-            console.log('ABER2')
             enunciado=resp[0]
             tipo=resp[1]
 
@@ -519,12 +492,9 @@ function pedirEnunciado(){
             preConfirm: (inputValue) => {
                 if (inputValue.length > 2) {
                     resp.push(inputValue)
-                    console.log(resp)
-                    //resolve(resp);
                     return 'correcto';
                     
                 } else {
-                    //reject('error');
                     return 'error';
                 }
             }
@@ -563,7 +533,6 @@ function pedirEnunciado(){
 
 function pedirTipo(resp){
     return new Promise((resolve, reject) => {
-        console.log(resp)
         let preguntaEj = new Pregunta('asdasdas', 'Alternativa')        
         Swal.fire({
             title: 'Ingrese el ID de tipo de pregunta nueva:',
@@ -574,12 +543,8 @@ function pedirTipo(resp){
                 let l = preguntaEj.tipos.length;
                 if (inputValue >= 0 && inputValue < l && inputValue!=='') {
                     resp.push(preguntaEj.tipos[inputValue]);
-                    console.log(resp)
-                    //console.log(id)
-                    //resolve(resp);
                     return 'correcto';
                 } else {
-                    //reject('error');
                     return 'error';
                 }
             }
@@ -638,12 +603,9 @@ function generarPreguntaA(pregunta){
                     return pedirAlternativas(pregunta);
                 }).then((alt) => {
                     pregunta.opciones = alt;
-                    console.log(alt);
-                    console.log(pregunta.opciones);
                     return pedirCorrecta(pregunta);
                 }).then((respuestaCorrecta) => {
                     pregunta.correcta = respuestaCorrecta;
-                    console.log(pregunta.correcta);
                     resolve(pregunta);
                 }).catch((error) => {
                     console.error(error);
@@ -668,7 +630,6 @@ function generarPreguntaBC(pregunta){
     return new Promise((resolve, reject) => {
         pedirCorrecta(pregunta).then((respuestaCorrecta) => {
             pregunta.correcta = respuestaCorrecta;
-            console.log(pregunta.correcta);
             resolve(pregunta);
             }).catch((error) => {
                 console.error(error);
@@ -697,7 +658,6 @@ function pedirAlternativas(pregunta) {
                         resp=inputValue;
                         return 'correcto';                        
                     } else {
-                        //reject('error');
                         return 'error';
                     }
                 }
@@ -709,8 +669,6 @@ function pedirAlternativas(pregunta) {
                         icon: 'success',
                         confirmButtonText: 'Aceptar'
                     }).then(() => {
-                        
-                        console.log(resp)
                         resolve(resp);
                         
                     }).catch((error) => {
@@ -746,7 +704,6 @@ function pedirAlternativas(pregunta) {
                 reject(error);
             });
         } else {
-            console.log(arrOps)
             resolve(arrOps)
         }
     }
@@ -757,8 +714,7 @@ function pedirAlternativas(pregunta) {
 
 function pedirCorrecta(pregunta){
     let corr;
-    return new Promise((resolve, reject) => {
-        console.log(pregunta)       
+    return new Promise((resolve, reject) => {     
         Swal.fire({
             title: 'Ingrese el ID de la respuesta correcta:',
             html: pregunta.opciones.map((opp, index) => `<p align='left'><strong>${index}</strong>: ${opp}`).join('<br />'),
@@ -768,12 +724,8 @@ function pedirCorrecta(pregunta){
                 let l = pregunta.opciones.length;
                 if (inputValue >= 0 && inputValue < l && inputValue!=='') {
                     corr=pregunta.opciones[inputValue];
-                    //console.log(corr)
-                    //console.log(id)
-                    //resolve(resp);
                     return 'correcto';
                 } else {
-                    //reject('error');
                     return 'error';
                 }
             }
@@ -805,21 +757,5 @@ function pedirCorrecta(pregunta){
     })
 }
 
+//Se inicia el programa
 Inicio(arrEncuestas);
-
-// let pregunta5 = new Pregunta('Cual es la capital de Chile?', 'Alternativa')
-// pregunta1.cantidad=5
-// pregunta1.opciones=['Temuco','Valdivia','Rancagua','Santiago','Coquimbo']
-// pregunta1.correcta='Santiago'
-
-// let pregunta6 = new Pregunta('Soy hombre?', 'Binaria: Si o No')
-// pregunta6.correcta='Si'
-// pregunta6.estructurar()
-
-// let pregunta7 = new Pregunta('Soy hombre?', 'Abierta')
-// pregunta7.correcta='Si'
-// pregunta7.estructurar()
-
-// console.log(pregunta7.correcta)
-// generarPreguntaBC(pregunta7)
-// console.log(pregunta7.correcta)
