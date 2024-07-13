@@ -1,4 +1,5 @@
 const { Room } = require('../models/Room');
+const { rooms } = require("../databases/tables");
 
 let roomInstances = [];
 
@@ -16,3 +17,4 @@ for (let i = 0; i < rooms.id_room.length; i++) {
     roomInstances.push(room);
 };
 
+module.exports = { roomInstances };
