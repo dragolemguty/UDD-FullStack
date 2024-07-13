@@ -1,4 +1,5 @@
 const { GuestRank } = require('../models/GuestRank');
+const { guest_ranks } = require("../databases/tables");
 
 let guestRankInstances = [];
 

@@ -1,8 +1,8 @@
 class GuestEvent {
-    constructor(id_booking, id_event, event_date, is_type_room_change, is_qty_guest_change, is_qty_room_change, is_dates_change, new_type_room, deleted_rooms, adds_rooms, new_arrival_date, new_departure_date, new_guests_qty, new_nights_qty) {
+    constructor(id_booking, id_event, event_datetime, is_type_room_change, is_qty_guest_change, is_qty_room_change, is_dates_change, new_type_room, deleted_rooms, adds_rooms, new_arrival_date, new_departure_date, new_guests_qty, new_nights_qty) {
         this.id_booking = id_booking;
         this.id_event = id_event;
-        this.event_date = event_date;
+        this.event_datetime = event_datetime;
         this.is_type_room_change = is_type_room_change;
         this.is_qty_guest_change = is_qty_guest_change;
         this.is_qty_room_change = is_qty_room_change;

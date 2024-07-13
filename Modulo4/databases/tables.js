@@ -60,3 +60,6 @@ let guest_events ={
     'new_guests_qty':[],
     'new_nights_qty':[]
 };
+
+
+module.exports = { rooms, guests, guest_ranks, bookings , guest_events };

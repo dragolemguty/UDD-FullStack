@@ -13,6 +13,18 @@ class Booking {
         this.is_cancelled = is_cancelled;
         this.last_update_datetime = last_update_datetime;
     }
+    set setModif(is_modified){
+        this.is_modified = is_modified;
+    }
+    set setPaid(is_paid){
+        this.is_paid = is_paid;
+    }
+    set setCancel(is_cancelled){
+        this.is_cancelled = is_cancelled;
+    }
+    set setLastUpdate(last_update_datetime){
+        this.last_update_datetime = last_update_datetime;
+    }
 }
 
 module.exports = { Booking };
