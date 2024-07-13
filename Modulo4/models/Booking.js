@@ -1,5 +1,5 @@
 class Booking {
-    constructor(id_guest, id_booking, id_room_array, booking_date, arrival_date, departure_date, nights_qty, guests_qty, is_modified, is_paid, is_cancelled, last_update_date) {
+    constructor(id_guest, id_booking, id_room_array, booking_date, arrival_date, departure_date, nights_qty, guests_qty, is_modified, is_paid, is_cancelled, last_update_datetime) {
         this.id_guest = id_guest;
         this.id_booking = id_booking;
         this.id_room_array = id_room_array;
@@ -11,7 +11,7 @@ class Booking {
         this.is_modified = is_modified;
         this.is_paid = is_paid;
         this.is_cancelled = is_cancelled;
-        this.last_update_date = last_update_date;
+        this.last_update_datetime = last_update_datetime;
     }
 }
 

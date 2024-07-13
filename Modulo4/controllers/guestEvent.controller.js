@@ -20,4 +20,4 @@ for (let i = 0; i < guest_events.id_booking.length; i++) {
         guest_events.new_nights_qty[i]
     );
     guestEventInstances.push(guestEvent);
-}
+};
