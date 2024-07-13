@@ -14,4 +14,5 @@ for (let i = 0; i < rooms.id_room.length; i++) {
         rooms.amenities[i]
     );
     roomInstances.push(room);
-}
+};
+

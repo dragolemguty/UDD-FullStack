@@ -18,4 +18,4 @@ for (let i = 0; i < guests.id_guest.length; i++) {
         guests.guest_details[i]
     );
     guestInstances.push(guest);
-}
+};

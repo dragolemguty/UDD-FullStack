@@ -9,4 +9,4 @@ for (let i = 0; i < guest_ranks.guest_ranks.length; i++) {
         guest_ranks.beneficios[i]
     );
     guestRankInstances.push(guestRank);
-}
+};
