@@ -1,0 +1,260 @@
+p {
+    font-family: Candara;
+}
+
+:root {
+    --primary-color: #0a741a;
+    --text-dark: #0f172a;
+    --white: #ffffff;
+    --max-width: 1200px;
+}
+
+.flexbox {
+    display: flex;
+    align-items: center; /* Alinea verticalmente el contenido en el centro */
+    justify-content: center; /* Alinea horizontalmente el contenido en el centro */
+    text-align: center;
+    background: #ffff99;
+    color: #333;
+    height: 100%; /* Asegura que el contenedor flexbox ocupe todo el alto disponible */
+}
+
+.row {
+    /*display: flex;  Usa flexbox para alinear las columnas */
+    margin-left: -15px; /* Ajusta según el espaciado de Bootstrap */
+    margin-right: -15px; /* Ajusta según el espaciado de Bootstrap */
+    display: flex;
+    justify-content: space-between;
+}
+
+.col-md-4 {
+    padding-left: 15px; /* Espaciado entre columnas */
+    padding-right: 15px; /* Espaciado entre columnas */
+}
+
+.col-md-6 {
+    /*display: flex; /* Usa flexbox en las columnas */
+    /*align-items: center; /* Alinea verticalmente las columnas */
+    /*justify-content: center;  Centra el contenido horizontalmente en las columnas */
+    padding-left: 15px; /* Espaciado entre columnas */
+    padding-right: 15px; /* Espaciado entre columnas */
+}
+
+
+.image-container {
+    position: relative;
+   /* width: auto; /* Ajusta el ancho según sea necesario */
+    /*height: auto; /* Mantiene la altura automática para un contenedor flexible */
+    /*width: 100%; /* Asegura que el contenedor ocupe todo el ancho de la columna */
+    /*height: 200px; /* Ajusta la altura según sea necesario */
+    /*overflow: hidden;  Asegura que el contenido no se desborde */
+    overflow: visible; /* Asegura que el contenido no se desborde */
+}
+
+
+.description {
+    text-align: center; /* Centra el texto dentro del contenedor */
+    margin-top: 10px; /* Espacio entre la imagen y el texto descriptivo */
+    font-size: 0.9rem; /* Tamaño del texto, ajusta según sea necesario */
+    color: #333; /* Color del texto, ajusta según sea necesario */
+    background: rgba(255, 255, 255, 0.8); /* Fondo blanco semi-transparente, opcional */
+    padding: 5px; /* Espaciado alrededor del texto */
+    border-radius: 5px; /* Bordes redondeados, opcional */
+}
+
+
+.neon {
+    color: hsl(0, 0%, 0%);
+    text-shadow:
+      0 0 5px #fff,
+      0 0 10px #fff,
+      0 0 20px #fff,
+      0 0 40px rgb(84, 227, 82),
+      0 0 80px rgb(84, 227, 82),
+      0 0 90px rgb(84, 227, 82),
+      0 0 100px rgb(84, 227, 82),
+      0 0 150px rgb(84, 227, 82);
+  }
+
+.card {
+    border: none; /* Elimina los bordes predeterminados */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Añade una sombra para darle profundidad */
+}
+
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 1.25rem; /* Ajusta el padding según sea necesario */
+    
+}
+
+.card-title {
+    font-size: 1.25rem;
+    margin-bottom: 0.75rem;
+}
+
+.card-text {
+    font-size: 1rem;
+    color: #555;
+}
+/*
+.card-img {
+    height: 100%;
+    object-fit: cover; /* Asegura que la imagen cubra el área asignada 
+}
+*/
+
+.card-img {
+    width: 100%;
+    height: auto;
+  }
+  
+
+
+.img-fluid {
+    width: 100%; /* Asegura que la imagen ocupe todo el ancho del contenedor */
+    height: 100%; /* Ajusta la altura según lo necesites */
+    object-fit: cover; /* Cubre el contenedor recortando el exceso */
+    object-fit: contain; /* Mantiene la proporción sin recortar */
+    max-width: 100%;
+    max-height: 200px; /* Ajusta la altura máxima según sea necesario */
+}
+
+/*.img-fluid2 {
+    width: 100%; 
+    height: 100%;
+    /*object-fit: cover; 
+    /*object-fit: contain; 
+}*/
+.img-fluid2 {
+    width: 100%; /* Asegura que la imagen ocupe todo el ancho del contenedor */
+    height: auto; /* Ajusta la altura automáticamente para mantener la proporción */
+    transition: transform 0.3s ease, opacity 0.3s ease; /* Agrega transición suave para los efectos */
+    display: block;
+    box-shadow: 0px 0px 22px #fff;
+}
+
+/* Efecto de aumento de tamaño al pasar el mouse por encima */
+.img-fluid2:hover {
+    transform: scale(1.1); /* Agranda la imagen al 110% */
+    opacity: 0.95; /* Ajusta la opacidad si es necesario */
+    box-shadow: 0px 0px 22px #05ed5a;
+}
+
+/* Efecto de rotación al mantener el clic en la imagen */
+.img-fluid2:active {
+    transform: rotate(-15deg); /* Rote la imagen 15 grados a la derecha mientras se mantiene el clic */
+}
+
+
+.img-fluid3 {
+    width: 100%; /* Asegura que la imagen ocupe todo el ancho del contenedor */
+    height: auto; /* Ajusta la altura automáticamente para mantener la proporción */
+    transition: transform 0.3s ease, opacity 0.3s ease; /* Agrega transición suave para los efectos */
+    display: block;
+    box-shadow: 0px 0px 22px #fff;
+}
+
+/* Efecto de aumento de tamaño al pasar el mouse por encima */
+.img-fluid3:hover {
+    transform: scale(1.1); /* Agranda la imagen al 110% */
+    opacity: 0.95; /* Ajusta la opacidad si es necesario */
+    box-shadow: 0px 0px 22px #05ed5a;
+}
+
+/* Efecto de rotación al mantener el clic en la imagen */
+.img-fluid3:active {
+    transform: rotate(15deg); /* Rote la imagen 15 grados a la derecha mientras se mantiene el clic */
+}
+
+
+
+.hover-image {
+    transition: transform 0.3s, opacity 0.3s;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: none;
+    z-index: 500;
+}
+
+.darken-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    z-index: 500;
+}
+
+body {
+
+    min-height: 150vh;
+    background-image: linear-gradient(rgba(35, 223, 50, 0.24), rgba(17, 84, 7, 0.371)), url("/assets/fondo.avif");
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    z-index: 0;
+    
+}
+
+
+.socials > div {
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.socials a {
+    color: var(--text-dark);
+    padding: 2px 7px;
+    font-size: 1.25rem;
+    background-color: var(--white);
+    border-radius: 100%;
+    transition: 0.3s;
+}
+
+.socials a:hover {
+    color: var(--white);
+    background-color: var(--primary-color);
+}
+
+footer {
+    opacity: 0.5;
+}
+
+
+.cont_letras {
+    font-family: "Ga Maamli", sans-serif;
+}
+
+
+.navbar-custom {
+    background-color: var(--white); /* Fondo blanco */
+    opacity: 0.5; /* Opacidad del 50% */
+}
+
+.navbar-custom .navbar-nav .nav-link {
+    color: var(--text-dark); /* Color del texto en los enlaces */
+}
+
+.navbar-custom .navbar-nav .nav-link:hover {
+    color: var(--primary-color); /* Color del texto en los enlaces al pasar el cursor */
+}
+
+.navbar-custom .navbar-brand .cont_letras {
+    font-family: "Ga Maamli", sans-serif;
+    color: var(--text-dark); /* Color del texto en el brand */
+}
